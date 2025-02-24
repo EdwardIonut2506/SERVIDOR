@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de League of Legends</title>
+    <!-- Inclusión de la librería jQuery para manipulación del DOM -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Estilos generales para la página */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a0a0a;
+            color: #c8aa6e;
+            text-align: center;
+        }
+        /* Estilo del título principal */
+        h1 {
+            color: #ffd700;
+        }
+        /* Estilo del formulario de búsqueda */
+        form {
+            margin: 20px 0;
+        }
+        input {
+            padding: 10px;
+            border: 2px solid #ffd700;
+            background-color: #222;
+            color: #fff;
+        }
+        /* Estilo de cada campeón en la lista */
+        .campeon {
+            border: 2px solid #c8aa6e;
+            background-color: #222;
+            padding: 15px;
+            margin: 10px auto;
+            width: 60%;
+            border-radius: 8px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        /* Estilo de los campeones visibles */
+        .campeon.mostrar {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Título principal de la página -->
+    <h1>Campeones de League of Legends</h1>
+    
+    <!-- Formulario de búsqueda de campeones -->
+    <form>
+        <label for="texto">Buscar campeón:</label>
+        <input type="text" id="texto">
+    </form>
+    
+    <!-- Contenedor para los campeones -->
+    <div id="campeones"></div>
+    
+    <script>
+        $(document).ready(function() {
+            /**
+             * Array de objetos representando los campeones en el juego
+             * Cada objeto contiene el nombre, vida, estadísticas y una breve historia del campeón
+             * @type {Array<Object>}
+             */
+            var campeones = [
+                { nombre: "Ahri", vida: 526, estadisticas: "AP, Mago", historia: "Una vastaya con poderes místicos y un gran carisma."},
+                { nombre: "Darius", vida: 582, estadisticas: "AD, Luchador", historia: "El líder no oficial de Noxus con un hacha temible." },
+                { nombre: "Ezreal", vida: 500, estadisticas: "AD, Tirador", historia: "Un aventurero prodigio con un guantelete místico." },
+                { nombre: "Garen", vida: 620, estadisticas: "AD, Tanque", historia: "Un guerrero de Demacia con una armadura impenetrable." },
+                { nombre: "Jinx", vida: 520, estadisticas: "AD, Tirador", historia: "Una criminal caótica con una obsesión por las explosiones." },
+                { nombre: "Katarina", vida: 510, estadisticas: "AP, Asesino", historia: "Una asesina noxiana maestra del combate con cuchillas." },
+                { nombre: "Leona", vida: 576, estadisticas: "Tanque, Apoyo", historia: "Una guerrera de los Solari con un escudo solar." },
+                { nombre: "Malphite", vida: 574, estadisticas: "Tanque, AP", historia: "Un coloso viviente de piedra con gran resistencia." },
+                { nombre: "Nasus", vida: 561, estadisticas: "Tanque, Luchador", historia: "Un guardián ascendido con el poder del Shurima." },
+                { nombre: "Orianna", vida: 530, estadisticas: "AP, Mago", historia: "Un autómata que controla una esfera mecánica." },
+                { nombre: "Riven", vida: 560, estadisticas: "AD, Luchador", historia: "Una exiliada con una espada rota y un pasado trágico." },
+                { nombre: "Shen", vida: 540, estadisticas: "Tanque, Luchador", historia: "Un ninja que equilibra el espíritu y la espada." },
+                { nombre: "Thresh", vida: 560, estadisticas: "Apoyo, AP", historia: "Un espectro cruel que cosecha las almas de los caídos." },
+                { nombre: "Vayne", vida: 515, estadisticas: "AD, Tirador", historia: "Una cazadora de monstruos con una ballesta de plata." },
+                { nombre: "Zed", vida: 576, estadisticas: "AD, Asesino", historia: "Un maestro de las sombras que busca el poder absoluto." }
+            ];
+
+            /**
+             * Itera sobre el array de campeones y genera un bloque HTML para cada uno
+             * Añade los campeones al contenedor #campeones
+             * @param {Object} campeon - Un objeto que representa al campeón
+             * @param {string} campeon.nombre - El nombre del campeón
+             * @param {number} campeon.vida - La vida del campeón
+             * @param {string} campeon.estadisticas - Las estadísticas del campeón
+             * @param {string} campeon.historia - La historia del campeón
+             */
+            campeones.forEach(campeon => {
+                $('#campeones').append(`
+                    <div class="campeon" data-nombre="${campeon.nombre.toLowerCase()}">
+                        <h2>${campeon.nombre}</h2>
+                        <p><strong>Vida:</strong> ${campeon.vida}</p>
+                        <p><strong>Estadísticas:</strong> ${campeon.estadisticas}</p>
+                        <p><strong>Historia:</strong> ${campeon.historia}</p>
+                    </div>
+                `);
+            });
+            
+            /**
+             * Maneja el evento de entrada en el campo de búsqueda
+             * Filtra los campeones en función del texto introducido por el usuario
+             * @param {Event} event - El evento de entrada en el campo de texto
+             */
+            $('#texto').on('input', function() {
+                var consulta = this.value.toLowerCase();
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');  // Filtrar caracteres no válidos
+                $('.campeon').removeClass('mostrar');  // Ocultar todos los campeones
+                if (consulta) {
+                    $(`.campeon[data-nombre*="${consulta}"]`).addClass('mostrar');  // Mostrar campeones que coinciden con la búsqueda
+                }
+            });
+        });
+    </script>
+</body>
+</html>
